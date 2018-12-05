@@ -39,6 +39,19 @@ harmonic x y = if mod x (y+1) == 0
         then cyan
         else white
 
+-- modified function to render only the primes
+
+harmonic' :: Int -> Int -> PixelRGB8
+harmonic' x y = if mod x (primes !! y) == 0
+    then
+        if isTower x
+            then black
+            else red
+    else
+        if isPrime x
+            then cyan
+            else white
+
 -- dimensions
 
 type Dimensions = (Int,Int)
@@ -52,7 +65,7 @@ draw d = do
     if done then
         putClrLn W (file ++ " skipped") -- print existing file to console
     else do
-        savePngImage file (ImageRGB8 (generateImage harmonic w h))
+        savePngImage file (ImageRGB8 (generateImage harmonic' w h))
         putClrLn G file -- print drawn file to console
     where
         (w,h) = d
